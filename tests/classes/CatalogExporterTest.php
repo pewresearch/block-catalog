@@ -12,7 +12,15 @@ class CatalogExporterTest extends \WP_UnitTestCase {
 
 		$this->exporter = new CatalogExporter();
 
-		$this->tmp_file = get_temp_dir() . wp_tempnam( 'foo', 'csv' );
+		$this->tmp_file = get_temp_dir() . uniqid() . '.csv';
+	}
+
+	function tearDown():void {
+		parent::tearDown();
+
+		if ( file_exists( $this->tmp_file ) ) {
+			unlink( $this->tmp_file );
+		}
 	}
 
 	function test_it_will_not_export_if_output_path_is_not_writeable() {
