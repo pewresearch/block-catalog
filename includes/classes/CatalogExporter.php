@@ -219,6 +219,7 @@ class CatalogExporter {
 		$output     = '';
 
 		foreach ( $this->csv_buffer as $row ) {
+			$row     = array_map( [ $this, 'esc_csv' ], $row );
 			$output .= implode( ',', $row ) . "\n";
 		}
 
@@ -227,6 +228,27 @@ class CatalogExporter {
 		}
 
 		return $filesystem->put_contents( $output_path, $output );
+	}
+
+	/**
+	 * Escapes a string for inclusion in a CSV file.
+	 *
+	 * This function adds quotes only if necessary (if the string contains commas, quotes, or newlines).
+	 * It escapes double quotes by doubling them.
+	 *
+	 * @param string $data The input string to be escaped.
+	 * @return string The escaped string.
+	 */
+	private function esc_csv( $data ) {
+		$has_quotes = false !== strpos( $data, '"' );
+		$has_commas = false !== strpos( $data, ',' );
+
+		if ( $has_quotes || $has_commas ) {
+			$data = str_replace( '"', '""', $data );
+			$data = '"' . $data . '"';
+		}
+
+		return $data;
 	}
 
 	/**
