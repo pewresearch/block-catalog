@@ -5,8 +5,9 @@ namespace BlockCatalog;
 class CatalogBuilderTest extends \WP_UnitTestCase {
 
 	public $builder;
+	public $term_factory;
 
-	function setUp() {
+	function setUp():void {
 		parent::setUp();
 
 		$this->builder      = new CatalogBuilder();
@@ -402,9 +403,10 @@ class CatalogBuilderTest extends \WP_UnitTestCase {
 			$this->builder->catalog( $post_id );
 		}
 
-		$this->builder->delete_index();
+		$result = $this->builder->delete_index();
 
 		$actual = get_terms( [ 'taxonomy' => BLOCK_CATALOG_TAXONOMY ] );
 		$this->assertEmpty( $actual );
 	}
+
 }

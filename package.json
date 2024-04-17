@@ -1,14 +1,13 @@
 {
   "name": "block-catalog-plugin",
   "description": "Easily keep track of which Gutenberg Blocks are used across your site.",
-  "version": "1.5.0",
+  "version": "1.5.4",
   "author": {
     "name": "Darshan Sawardekar",
     "email": "darshan@10up.com"
   },
   "scripts": {
     "start": "npm run watch",
-    "watch": "10up-toolkit watch --port=5010 --hot",
     "build": "10up-toolkit build",
     "dev": "10up-toolkit build --watch",
     "watch": "10up-toolkit build --watch",
@@ -21,13 +20,14 @@
     "build-release-svn": "mkdir -p releases/svn && bin/build-release-svn.sh $npm_package_version"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=20.0.0"
   },
   "devDependencies": {
-    "10up-toolkit": "^5.2.1"
+    "10up-toolkit": "^6.0.1",
+    "prettier": "^3.2.5"
   },
   "dependencies": {
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.8.1"
   },
   "10up-toolkit": {
     "entry": {

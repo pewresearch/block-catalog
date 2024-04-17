@@ -4,11 +4,69 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
-- todo
+## [1.5.4] - 2024-02-29
+
+### Added
+
+- Support for the WordPress.org plugin preview (props [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#38](https://github.com/10up/block-catalog/pull/38)).
+
+### Changed
+
+- Significantly improved performance of block catalog reset on larger WordPress installations (props [@dsawardekar](https://github.com/dsawardekar), [@Sidsector9](https://github.com/Sidsector9) via [#41](https://github.com/10up/block-catalog/pull/41)).
+- Clean up NPM dependencies and update the minimum node version to 20 (props [@Sidsector9](https://github.com/Sidsector9), [@dsawardekar](https://github.com/dsawardekar) via [#43](https://github.com/10up/block-catalog/pull/43)).
+
+### Security
+
+- Bump `tj-actions/changed-files` from 39 to 41 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#39](https://github.com/10up/block-catalog/pull/39)).
+- Bump `follow-redirects` from 1.15.2 to 1.15.4 (props [@dependabot](https://github.com/apps/dependabot), [@Sidsector9](https://github.com/Sidsector9) via [#40](https://github.com/10up/block-catalog/pull/40)).
+
+## [1.5.3] - 2023-11-23
+
+### Fixed
+
+- PHP 8.2 deprecation warnings (props [@dsawardekar](https://github.com/dsawardekar), [@ravinderk](https://github.com/ravinderk) via [#34](https://github.com/10up/block-catalog/pull/34)).
+
+### Added
+
+- PHPUnit 9.x support (props [@dsawardekar](https://github.com/dsawardekar), [@ravinderk](https://github.com/ravinderk) via [#34](https://github.com/10up/block-catalog/pull/34)).
+
+### Security
+
+- Bump `sharp` from 0.32.3 to 0.32.6 (props [@dependabot](https://github.com/apps/dependabot), [@faisal-alvi](https://github.com/faisal-alvi) via [#32](https://github.com/10up/block-catalog/pull/32)).
+
+## [1.5.2] - 2023-11-16
+
+### Changed
+
+- Bump WordPress "tested up to" version to 6.4 (props [@qasumitbagthariya](https://github.com/qasumitbagthariya), [@jeffpaul](https://github.com/jeffpaul) via [#28](https://github.com/10up/block-catalog/pull/28), [#29](https://github.com/10up/block-catalog/pull/29)).
+
+## [1.5.1] - 2023-10-24
+
+**Note that this release changes the name of the base plugin file. As such, you'll probably need to reactivate the plugin after updating.**
+
+### Added
+
+- Add our standard GitHub Action automations (props [@jeffpaul](https://github.com/jeffpaul), [@dsawardekar](https://github.com/dsawardekar), [@dkotter](https://github.com/dkotter) via [#10](https://github.com/10up/block-catalog/pull/10), [#20](https://github.com/10up/block-catalog/pull/20), [#22](https://github.com/10up/block-catalog/pull/22), [#23](https://github.com/10up/block-catalog/pull/23), [#24](https://github.com/10up/block-catalog/pull/24), [#25](https://github.com/10up/block-catalog/pull/25)).
+
+### Changed
+
+- Update our plugin image assets (props [Brooke Campbell](https://www.linkedin.com/in/brookecampbelldesign/), [@jeffpaul](https://github.com/jeffpaul), [@dsawardekar](https://github.com/dsawardekar), [@faisal-alvi](https://github.com/faisal-alvi) via [#11](https://github.com/10up/block-catalog/pull/11), [#17](https://github.com/10up/block-catalog/pull/17)).
+- Updated the main plugin file name (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc), [@dsawardekar](https://github.com/dsawardekar) via [#18](https://github.com/10up/block-catalog/pull/18)).
+
+### Security
+
+- Bump `@babel/traverse` from 7.22.8 to 7.23.2 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#21](https://github.com/10up/block-catalog/pull/21)).
 
 ## [1.5.0] - 2023-08-11
 
-- Adds support for multisite via WP CLI
+### Added
+
+- `Beta` Support Level (props [@jeffpaul](https://github.com/jeffpaul), [@dsawardekar](https://github.com/dsawardekar) via [#3](https://github.com/10up/block-catalog/pull/3)).
+- Adds support for multisite via WP CLI (props [@dsawardekar](https://github.com/dsawardekar), [@Sidsector9](https://github.com/Sidsector9) via [#9](https://github.com/10up/block-catalog/pull/9)).
+
+### Fixed
+
+- Missing name in the `block_catalog_taxonomy_options` hook (props [@dsawardekar](https://github.com/dsawardekar), [@fabiankaegy](https://github.com/fabiankaegy) via [#6](https://github.com/10up/block-catalog/pull/6)).
 
 ## [1.4.0] - 2022-12-03
 
@@ -56,3 +114,18 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 - Initial release
 
+[Unreleased]: https://github.com/10up/block-catalog/compare/trunk...develop
+[1.5.4]: https://github.com/10up/block-catalog/compare/1.5.3...1.5.4
+[1.5.3]: https://github.com/10up/block-catalog/compare/1.5.2...1.5.3
+[1.5.2]: https://github.com/10up/block-catalog/compare/1.5.1...1.5.2
+[1.5.1]: https://github.com/10up/block-catalog/compare/1.5.0...1.5.1
+[1.5.0]: https://github.com/10up/block-catalog/compare/1.4.0...1.5.0
+[1.4.0]: https://github.com/10up/block-catalog/compare/1.3.2...1.4.0
+[1.3.2]: https://github.com/10up/block-catalog/compare/1.3.1...1.3.2
+[1.3.1]: https://github.com/10up/block-catalog/compare/1.3.0...1.3.1
+[1.3.0]: https://github.com/10up/block-catalog/compare/1.2.2...1.3.0
+[1.2.2]: https://github.com/10up/block-catalog/compare/1.2.1...1.2.2
+[1.2.1]: https://github.com/10up/block-catalog/compare/1.2.0...1.2.1
+[1.2.0]: https://github.com/10up/block-catalog/compare/1.1.0...1.2.0
+[1.1.0]: https://github.com/10up/block-catalog/compare/1.0.1...1.1.0
+[1.0.1]: https://github.com/10up/block-catalog/tree/v1.0.1
