@@ -5,11 +5,14 @@ namespace BlockCatalog;
 class CatalogExporterTest extends \WP_UnitTestCase {
 
 	public $exporter;
+	public $tmp_file;
 
-	function setUp() {
+	function setUp():void {
 		parent::setUp();
 
 		$this->exporter = new CatalogExporter();
+
+		$this->tmp_file = get_temp_dir() . wp_tempnam( 'foo', 'csv' );
 	}
 
 	function test_it_will_not_export_if_output_path_is_not_writeable() {
@@ -17,7 +20,7 @@ class CatalogExporterTest extends \WP_UnitTestCase {
 			'post_type' => 'post',
 		);
 
-		$result = $this->exporter->export( '/foo/bar/baz.csv', $opts );
+		$result = $this->exporter->export( '/no/such/temp-csv-path.csv', $opts );
 
 		$this->assertInstanceOf( 'WP_Error', $result );
 		$this->assertEquals( 'output_not_writable', $result->get_error_code() );
@@ -28,7 +31,7 @@ class CatalogExporterTest extends \WP_UnitTestCase {
 			'post_type' => 'post',
 		);
 
-		$result = $this->exporter->export( '/tmp/foo.csv', $opts );
+		$result = $this->exporter->export( $this->tmp_file, $opts );
 
 		$this->assertFalse( $result['success'] );
 		$this->assertEquals( 'No terms found', $result['message'] );
@@ -41,7 +44,7 @@ class CatalogExporterTest extends \WP_UnitTestCase {
 
 		$this->factory->post->create_many( 3 );
 
-		$result = $this->exporter->export( '/tmp/foo.csv', $opts );
+		$result = $this->exporter->export( $this->tmp_file, $opts );
 
 		$this->assertFalse( $result['success'] );
 		$this->assertEquals( 'No terms found', $result['message'] );
@@ -66,16 +69,16 @@ class CatalogExporterTest extends \WP_UnitTestCase {
 			$builder->catalog( $post_id );
 		}
 
-		// get temporary writable file using WP api
-		$tmp_file = wp_tempnam( 'foo', 'csv' );
-
-		$result = $this->exporter->export( $tmp_file, $opts );
+		$result = $this->exporter->export( $this->tmp_file, $opts );
 
 		$this->assertTrue( $result['success'] );
 		$this->assertEquals( 'Exported successfully', $result['message'] );
 
-		$csv = file_get_contents( $tmp_file );
-		$this->assertContains( 'block_name,block_slug,post_id,post_type,post_title,permalink,status', $csv );
+		$csv = file_get_contents( $this->tmp_file );
+		$this->assertStringContainsString( 'block_name,block_slug,post_id,post_type,post_title,permalink,status', $csv );
+
+		$this->assertStringContainsString( 'Paragraph', $csv );
+		$this->assertStringContainsString( 'core-paragraph', $csv );
 	}
 
 }
