@@ -239,21 +239,21 @@ class CatalogCommand extends \WP_CLI_Command {
 	 * @param array $opts Optional arguments.
 	 */
 	public function export( $args = [], $opts = [] ) {
-			$output          = isset( $opts['output'] ) ? $opts['output'] : '/tmp/block-catalog.csv';
-			$post_types      = isset( $opts['post_type'] ) ? explode( ',', $opts['post_type'] ) : array();
-			$posts_per_block = isset( $opts['posts_per_block'] ) ? intval( $opts['posts_per_block'] ) : -1;
+		$output          = isset( $opts['output'] ) ? $opts['output'] : '/tmp/block-catalog.csv';
+		$post_types      = isset( $opts['post_type'] ) ? explode( ',', $opts['post_type'] ) : array();
+		$posts_per_block = isset( $opts['posts_per_block'] ) ? intval( $opts['posts_per_block'] ) : -1;
 
-			$opts['output']          = $output;
-			$opts['post_type']       = $post_types;
-			$opts['posts_per_block'] = $posts_per_block;
+		$opts['output']          = $output;
+		$opts['post_type']       = $post_types;
+		$opts['posts_per_block'] = $posts_per_block;
 
-			$exporter = new \BlockCatalog\CatalogExporter();
-			$result   = $exporter->export( $output, $opts );
+		$exporter = new \BlockCatalog\CatalogExporter();
+		$result   = $exporter->export( $output, $opts );
 
 		if ( is_wp_error( $result ) ) {
-				\WP_CLI::error( $result->get_error_message() );
+			\WP_CLI::error( $result->get_error_message() );
 		} else {
-				\WP_CLI::success( $result['message'] );
+			\WP_CLI::success( $result['message'] );
 		}
 	}
 
