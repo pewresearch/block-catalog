@@ -3,8 +3,8 @@ Contributors:      10up, dsawardekar, dkotter, jeffpaul
 Tags:              gutenberg, developer, blocks, custom blocks
 Tested up to:      6.5
 Stable tag:        1.6.0
-License:           GPLv2 or later
-License URI:       http://www.gnu.org/licenses/gpl-2.0.html
+License:           GPL-2.0-or-later
+License URI:       https://spdx.org/licenses/GPL-2.0-or-later.html
 
 Easily keep track of which Gutenberg Blocks are used across your site.
 
