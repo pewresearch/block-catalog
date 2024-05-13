@@ -409,4 +409,90 @@ class CatalogBuilderTest extends \WP_UnitTestCase {
 		$this->assertEmpty( $actual );
 	}
 
+	function test_it_knows_core_paragraph_is_not_classic_editor() {
+		$block = [
+			'blockName' => 'core/paragraph',
+		];
+
+		$this->assertFalse( $this->builder->is_classic_editor_block( $block ) );
+	}
+
+	function test_it_knows_untitled_html_is_classic_editor() {
+		$block = [
+			'blockName' => null,
+			'innerHTML' => '<p>Some HTML</p>',
+		];
+
+		$this->assertTrue( $this->builder->is_classic_editor_block( $block ) );
+	}
+
+	function test_it_does_not_have_classic_editor_in_terms_if_only_gutenberg() {
+		$post_content = <<<HTML
+<!-- wp:paragraph -->
+<p>Paragraph</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img src="https://example.com/image.jpg" alt="Image" /></figure>
+<!-- /wp:image -->
+HTML;
+
+		$post_id			= $this->factory->post->create( [ 'post_content' => $post_content ] );
+		$post_terms   = [
+			'core/paragraph' => 'Paragraph',
+			'core/image' => 'Image',
+		];
+
+		$actual = $this->builder->get_post_block_terms( $post_id );
+
+		$this->assertEquals( $post_terms, $actual['terms'] );
+	}
+
+	function test_it_has_classic_editor_in_terms_with_variation_1() {
+		$post_content = <<<HTML
+<p>
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.
+  Ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.
+</p>
+<hr />
+<!-- wp:image {"sizeSlug":"large","className":"is-style-default"} -->
+<figure class="wp-block-image size-large is-style-default">
+  <img
+    src="https://example.com/image.jpg"
+    alt=""
+  />
+</figure>
+<!-- /wp:image -->
+
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+<p>
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.
+	Ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.
+</p>
+<p>
+ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.
+</p>
+
+<!-- wp:image {"sizeSlug":"large","className":"is-style-default"} -->
+<figure class="wp-block-image size-large is-style-default">
+  <img
+    src="https://example.com/image-2.jpg"
+    alt=""
+  />
+</figure>
+<!-- /wp:image -->
+
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+<p>
+	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.
+	Ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.
+</p>
+HTML;
+		$post_id = $this->factory->post->create( [ 'post_content' => $post_content ] );
+		$actual  = $this->builder->get_post_block_terms( $post_id );
+
+		$this->assertEquals( 'Classic', $actual['terms']['core/classic'] );
+	}
+
+
 }
