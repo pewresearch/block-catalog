@@ -2,19 +2,7 @@
 
 > Easily keep track of which Gutenberg Blocks are used across your site.
 
-[![Support Level](https://img.shields.io/badge/support-beta-blueviolet.svg)](#support-level) ![WordPress tested up to version](https://img.shields.io/badge/WordPress-v6.1%20tested-success.svg) [![GPLv2 License](https://img.shields.io/github/license/10up/block-catalog.svg)](https://github.com/10up/block-catalog/blob/develop/LICENSE.md)
-
-## Table of Contents
-
-- [Features](#features)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Getting Started](#getting-started)
-- [WP CLI Commands](#wp-cli-commands)
-- [FAQs](#frequently-asked-questions)
-- [Support](#support-level)
-- [Changelog](#changelog)
-- [Contributing](#contributing)
+[![Support Level](https://img.shields.io/badge/support-beta-blueviolet.svg)](#support-level) ![WordPress Plugin: Tested WP Version](https://img.shields.io/wordpress/plugin/tested/block-catalog?label=WordPress) ![WordPress Plugin Required PHP Version](https://img.shields.io/wordpress/plugin/required-php/block-catalog?label=Requires%20PHP) ![WordPress Plugin: Required WP Version](https://img.shields.io/wordpress/plugin/wp-version/block-catalog?label=Requires%20WordPress) https://img.shields.io/wordpress/plugin/tested/block-catalog?label=WordPress%20compatibility [![GPL-2.0-or-later License](https://img.shields.io/github/license/10up/block-catalog.svg)](https://github.com/10up/block-catalog/blob/develop/LICENSE.md)
 
 ## Features
 
@@ -26,11 +14,6 @@
 - Use custom WordPress filters to extend the Block Catalog.
 - Find block usage on a Multisite network.
 - Export block catalog data to a CSV file via the WP CLI.
-
-## Requirements
-
-- PHP 7.4+
-- [WordPress](http://wordpress.org) 5.7+
 
 ## Installation
 
