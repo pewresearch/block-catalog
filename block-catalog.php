@@ -2,25 +2,25 @@
 /**
  * Plugin Name:       Block Catalog
  * Description:       Easily keep track of which Gutenberg Blocks are used across your site.
- * Version:           1.4.0
- * Requires at least: 5.7
+ * Version:           1.6.0
+ * Requires at least: 6.4
  * Requires PHP:      7.4
- * Author:            Darshan Sawardekar, 10up
+ * Author:            10up
  * Author URI:        https://10up.com
- * License:           GPL v2 or later
- * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * License:           GPL-2.0-or-later
+ * License URI:       https://spdx.org/licenses/GPL-2.0-or-later.html
  * Text Domain:       block-catalog
  * Domain Path:       /languages
  *
  * @package           BlockCatalog
  */
 
-
 // Useful global constants.
-define( 'BLOCK_CATALOG_PLUGIN_VERSION', '1.4.0' );
+define( 'BLOCK_CATALOG_PLUGIN_VERSION', '1.6.0' );
 define( 'BLOCK_CATALOG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'BLOCK_CATALOG_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'BLOCK_CATALOG_PLUGIN_INC', BLOCK_CATALOG_PLUGIN_PATH . 'includes/' );
+define( 'BLOCK_CATALOG_PLUGIN_FILE', plugin_basename( __FILE__ ) );
 
 define( 'BLOCK_CATALOG_TAXONOMY', 'block-catalog' );
 

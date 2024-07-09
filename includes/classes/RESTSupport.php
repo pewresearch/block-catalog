@@ -38,7 +38,7 @@ class RESTSupport {
 			[
 				'methods'             => 'POST',
 				'callback'            => [ $this, 'get_posts' ],
-				'permission_callback' => function() {
+				'permission_callback' => function () {
 					return current_user_can( \BlockCatalog\Utility\get_required_capability() );
 				},
 				'args'                => [
@@ -57,7 +57,7 @@ class RESTSupport {
 			[
 				'methods'             => 'POST',
 				'callback'            => [ $this, 'index' ],
-				'permission_callback' => function() {
+				'permission_callback' => function () {
 					return current_user_can( \BlockCatalog\Utility\get_required_capability() );
 				},
 				'args'                => [
@@ -76,7 +76,7 @@ class RESTSupport {
 			[
 				'methods'             => 'POST',
 				'callback'            => [ $this, 'get_terms' ],
-				'permission_callback' => function() {
+				'permission_callback' => function () {
 					return current_user_can( \BlockCatalog\Utility\get_required_capability() );
 				},
 			]
@@ -88,16 +88,9 @@ class RESTSupport {
 			[
 				'methods'             => 'POST',
 				'callback'            => [ $this, 'delete_index' ],
-				'permission_callback' => function() {
+				'permission_callback' => function () {
 					return current_user_can( \BlockCatalog\Utility\get_required_capability() );
 				},
-				'args'                => [
-					'term_ids' => [
-						'required'          => true,
-						'type'              => 'array',
-						'validate_callback' => [ $this, 'validate_term_ids' ],
-					],
-				],
 			]
 		);
 	}
@@ -136,28 +129,18 @@ class RESTSupport {
 	/**
 	 * Deletes the Block catalog index.
 	 *
-	 * @param \WP_REST_Request $request The request object
 	 * @return array
 	 */
-	public function delete_index( $request ) {
+	public function delete_index() {
 		\BlockCatalog\Utility\start_bulk_operation();
 
-		$term_ids = $request->get_param( 'term_ids' );
-		$updated  = 0;
-		$errors   = 0;
-		$builder  = new CatalogBuilder();
+		$updated = 0;
+		$errors  = 0;
+		$builder = new CatalogBuilder();
 
-		foreach ( $term_ids as $term_id ) {
-			$result = $builder->delete_term_index( $term_id );
-
-			\BlockCatalog\Utility\clear_caches();
-
-			if ( is_wp_error( $result ) ) {
-				$errors++;
-			} else {
-				$updated++;
-			}
-		}
+		$result  = $builder->delete_index( [ 'bulk' => true ] );
+		$updated = $result['removed'];
+		$errors  = $result['errors'];
 
 		\BlockCatalog\Utility\stop_bulk_operation();
 
@@ -266,7 +249,7 @@ class RESTSupport {
 			\BlockCatalog\Utility\clear_caches();
 
 			if ( is_wp_error( $result ) ) {
-				$errors++;
+				++$errors;
 			} else {
 				$updated += count( $result );
 			}
@@ -318,22 +301,4 @@ class RESTSupport {
 
 		return ! empty( $post_ids );
 	}
-
-	/**
-	 * Validates the specified term ids.
-	 *
-	 * @param array $term_ids The term ids to validate
-	 * @return bool
-	 */
-	public function validate_term_ids( $term_ids ) {
-		if ( empty( $term_ids ) ) {
-			return true;
-		}
-
-		$term_ids = array_map( 'intval', $term_ids );
-		$term_ids = array_filter( $term_ids );
-
-		return ! empty( $term_ids );
-	}
-
 }

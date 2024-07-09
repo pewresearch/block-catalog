@@ -42,51 +42,77 @@ class CatalogBuilder {
 	}
 
 	/**
-	 * Resets the Block Catalog by removing all catalog terms.
+	 * Bulk deletes all block catalog terms and their relationships via Direct DB query.
+	 * This is a faster alternative to wp_delete_term() which is slow for large catalogs.
 	 *
-	 * @param array $opts Optional opts
+	 * @param array $opts Optional args
+	 * @return array
 	 */
-	public function delete_index( $opts = [] ) {
-		\BlockCatalog\Utility\start_bulk_operation();
+	public function delete_index( $opts = [] ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+		global $wpdb;
 
-		$term_opts = [
-			'taxonomy'   => BLOCK_CATALOG_TAXONOMY,
-			'fields'     => 'ids',
-			'hide_empty' => false,
-		];
-
-		$terms   = get_terms( $term_opts );
-		$total   = count( $terms );
-		$removed = 0;
 		$errors  = 0;
-		$is_cli  = defined( 'WP_CLI' ) && WP_CLI;
+		$removed = 0;
 
-		// translators: %d is number of block catalog terms
-		$message = sprintf( __( 'Removing %d block catalog terms ...', 'block-catalog' ), $total );
+		// Delete term relationships
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$term_relationships = $wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->term_relationships}
+			WHERE term_taxonomy_id IN (
+				SELECT term_taxonomy_id FROM {$wpdb->term_taxonomy} WHERE taxonomy = %s
+				)",
+				BLOCK_CATALOG_TAXONOMY
+			)
+		);
 
-		if ( $is_cli ) {
-			$progress_bar = \WP_CLI\Utils\make_progress_bar( $message, $total );
+		if ( false === $term_relationships ) {
+			++$errors;
 		}
 
-		foreach ( $terms as $term_id ) {
-			if ( $is_cli ) {
-				$progress_bar->tick();
-			}
+		// Delete term taxonomy
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$term_taxonomy = $wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->term_taxonomy} WHERE taxonomy = %s",
+				BLOCK_CATALOG_TAXONOMY
+			)
+		);
 
-			$result = $this->delete_term_index( $term_id );
-
-			\BlockCatalog\Utility\clear_caches();
-
-			if ( ! is_wp_error( $result ) ) {
-				$removed++;
-			} else {
-				$errors++;
-			}
+		if ( false === $term_taxonomy ) {
+			++$errors;
+		} else {
+			$removed = $term_taxonomy;
 		}
 
-		if ( $is_cli ) {
-			$progress_bar->finish();
+		// Delete terms
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$terms = $wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->terms}
+				WHERE term_id IN (
+					SELECT term_id FROM {$wpdb->term_taxonomy} WHERE taxonomy = %s
+				)",
+				BLOCK_CATALOG_TAXONOMY
+			)
+		);
+
+		if ( false === $terms ) {
+			++$errors;
 		}
+
+		// update block catalog term counts = 0
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->term_taxonomy} SET count = 0 WHERE taxonomy = %s",
+				BLOCK_CATALOG_TAXONOMY
+			)
+		);
+
+		clean_term_cache( [], BLOCK_CATALOG_TAXONOMY, true );
+
+		$is_cli = defined( 'WP_CLI' ) && WP_CLI;
 
 		if ( $is_cli ) {
 			if ( ! empty( $removed ) ) {
@@ -97,11 +123,10 @@ class CatalogBuilder {
 			}
 
 			if ( ! empty( $errors ) ) {
+				// translators: %d is number of catalog terms removed
 				\WP_CLI::warning( sprintf( 'Failed to remove %d block catalog terms(s).', 'block-catalog' ), $errors );
 			}
 		}
-
-		\BlockCatalog\Utility\stop_bulk_operation();
 
 		return [
 			'removed' => $removed,
@@ -112,10 +137,9 @@ class CatalogBuilder {
 	/**
 	 * Deletes the specified term id and its associations.
 	 *
-	 * @param int   $term_id The term id to delete.
-	 * @param array $opts Optional opts
+	 * @param int $term_id The term id to delete.
 	 */
-	public function delete_term_index( $term_id, $opts = [] ) {
+	public function delete_term_index( $term_id ) {
 		return wp_delete_term( $term_id, BLOCK_CATALOG_TAXONOMY );
 	}
 
@@ -165,22 +189,22 @@ class CatalogBuilder {
 		}
 
 		foreach ( $output['variations'] ?? [] as $variation ) {
-			$blockName = $variation['blockName'];
-			$terms     = $variation['terms'] ?? [];
+			$block_name = $variation['blockName'];
+			$terms      = $variation['terms'] ?? [];
 
-			if ( empty( $blockName ) || empty( $terms ) ) {
+			if ( empty( $block_name ) || empty( $terms ) ) {
 				continue;
 			}
 
 			foreach ( $terms as $label ) {
-				$slug = $blockName . '-' . $label;
+				$slug = $block_name . '-' . $label;
 
 				if ( ! term_exists( $slug, BLOCK_CATALOG_TAXONOMY ) ) {
 					$term_args = [
 						'slug' => $slug,
 					];
 
-					$parent_id = $this->get_variation_parent_term( $blockName );
+					$parent_id = $this->get_variation_parent_term( $block_name );
 
 					if ( ! empty( $parent_id ) ) {
 						$term_args['parent'] = $parent_id;
@@ -216,10 +240,10 @@ class CatalogBuilder {
 	 * Builds a list of Block Term names for a given post.
 	 *
 	 * @param int   $post_id The post id.
-	 * @param array $opts Optional args
+	 * @param array $opts The options.
 	 * @return array
 	 */
-	public function get_post_block_terms( $post_id, $opts = [] ) {
+	public function get_post_block_terms( $post_id, $opts = [] ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		if ( empty( $post_id ) ) {
 			return [];
 		}
@@ -253,11 +277,14 @@ class CatalogBuilder {
 			}
 
 			if ( ! empty( $block_terms['variations'] ) ) {
-				$variations[] = array_merge( $variations, [
-					'blockName' => $block['blockName'],
-					'block'     => $block,
-					'terms'     => $block_terms['variations'],
-				] );
+				$variations[] = array_merge(
+					$variations,
+					[
+						'blockName' => $block['blockName'],
+						'block'     => $block,
+						'terms'     => $block_terms['variations'],
+					]
+				);
 			}
 		}
 
@@ -290,6 +317,11 @@ class CatalogBuilder {
 		$output = [];
 
 		foreach ( $blocks as $block ) {
+			// change null blocks to classic editor blocks if matched
+			if ( $this->is_classic_editor_block( $block ) ) {
+				$block['blockName'] = 'core/classic';
+			}
+
 			// ignore empty blocks
 			if ( empty( $block['blockName'] ) ) {
 				continue;
@@ -311,12 +343,14 @@ class CatalogBuilder {
 	 * Converts a block to a list of term names.
 	 *
 	 * @param array $block The block.
-	 * @param array $opts Optional opts
 	 * @return array
 	 */
-	public function block_to_terms( $block, $opts = [] ) {
+	public function block_to_terms( $block ) {
 		if ( empty( $block ) || empty( $block['blockName'] ) ) {
-			return [ 'terms' => [], 'variations' => [] ];
+			return [
+				'terms'      => [],
+				'variations' => [],
+			];
 		}
 
 		$terms = [];
@@ -487,5 +521,40 @@ class CatalogBuilder {
 		}
 
 		return intval( $result->term_id );
+	}
+
+	/**
+	 * Checks if block is a classic editor block
+	 *
+	 * @param array $block The block data
+	 * @return boolean
+	 */
+	public function is_classic_editor_block( $block ) {
+		if ( empty( $block ) ) {
+			return false;
+		}
+
+		// if block has a name, it's not a classic editor block
+		if ( ! is_null( $block['blockName'] ) ) {
+			return false;
+		}
+
+		$allowed_tags = array_keys( wp_kses_allowed_html( 'post' ) );
+
+		$inner_html = $block['innerHTML'] ?? '';
+		$inner_html = trim( $inner_html );
+
+		if ( empty( $inner_html ) ) {
+			return false;
+		}
+
+		// if inner_html has any of the allowed tags, it's a classic editor block
+		foreach ( $allowed_tags as $tag ) {
+			if ( strpos( $inner_html, "<{$tag}" ) !== false ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

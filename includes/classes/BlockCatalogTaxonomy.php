@@ -91,7 +91,7 @@ class BlockCatalogTaxonomy {
 		 * @param string $name Taxonomy name.
 		 * @return array The new taxonomy options
 		 */
-		$options = apply_filters( 'block_catalog_taxonomy_options', $options );
+		$options = apply_filters( 'block_catalog_taxonomy_options', $options, $this->get_name() );
 
 		return $options;
 	}
@@ -161,5 +161,4 @@ class BlockCatalogTaxonomy {
 			wp_dropdown_categories( $dropdown_args );
 		}
 	}
-
 }

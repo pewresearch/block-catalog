@@ -1,39 +1,25 @@
 # Block Catalog (BETA)
+
 > Easily keep track of which Gutenberg Blocks are used across your site.
 
-![WordPress tested up to version](https://img.shields.io/badge/WordPress-v6.1%20tested-success.svg)
-[![GPLv2 License](https://img.shields.io/github/license/10up/block-catalog.svg)](https://github.com/10up/block-catalog/blob/develop/LICENSE.md)
-
-## Table of Contents
-* [Features](#features)
-* [Requirements](#requirements)
-* [Installation](#installation)
-* [Getting Started](#getting-started)
-* [WP CLI Commands](#wp-cli-commands)
-* [FAQs](#frequently-asked-questions)
-* [Support](#support-level)
-* [Changelog](#changelog)
-* [Contributing](#contributing)
+[![Support Level](https://img.shields.io/badge/support-beta-blueviolet.svg)](#support-level) ![WordPress Plugin: Tested WP Version](https://img.shields.io/wordpress/plugin/tested/block-catalog?label=WordPress) ![WordPress Plugin Required PHP Version](https://img.shields.io/wordpress/plugin/required-php/block-catalog?label=Requires%20PHP) ![WordPress Plugin: Required WP Version](https://img.shields.io/wordpress/plugin/wp-version/block-catalog?label=Requires%20WordPress) https://img.shields.io/wordpress/plugin/tested/block-catalog?label=WordPress%20compatibility [![GPL-2.0-or-later License](https://img.shields.io/github/license/10up/block-catalog.svg)](https://github.com/10up/block-catalog/blob/develop/LICENSE.md)
 
 ## Features
 
-* Find which blocks are used across your site.
-* Fully Integrated with the WordPress Admin.
-* Use filters to see Posts that use a specific block.
-* Find Posts that use Reusable Blocks.
-* Use the WP CLI to quickly find blocks from the command line.
-* Use custom WordPress filters to extend the Block Catalog.
-
-## Requirements
-
-* PHP 7.4+
-* [WordPress](http://wordpress.org) 5.7+
+- Find which blocks are used across your site.
+- Fully Integrated with the WordPress Admin.
+- Use filters to see Posts that use a specific block.
+- Find Posts that use Reusable Blocks.
+- Use the WP CLI to quickly find blocks from the command line.
+- Use custom WordPress filters to extend the Block Catalog.
+- Find block usage on a Multisite network.
+- Export block catalog data to a CSV file via the WP CLI.
 
 ## Installation
 
-* Block Catalog can be installed like any other plugin from the [WordPress.org plugin directory](https://wordpress.org/plugins/block-catalog).
-* You can also install the plugin manually by [downloading a zip file](https://github.com/10up/block-catalog/releases/latest).
-* To install the plugin using [composer](https://getcomposer.org) and [wpackagist](https://wpackagist.org/), add the following to your composer.json.
+- Block Catalog can be installed like any other plugin from the [WordPress.org plugin directory](https://wordpress.org/plugins/block-catalog).
+- You can also install the plugin manually by [downloading a zip file](https://github.com/10up/block-catalog/releases/latest).
+- To install the plugin using [composer](https://getcomposer.org) and [wpackagist](https://wpackagist.org/), add the following to your composer.json.
 
 ```json
 "wpackagist-plugin/block-catalog":"~1.3.1"
@@ -41,76 +27,102 @@
 
 ## Getting Started
 
-On activation, the plugin will prompt you to index your content. You need to do this first before you will be able to see the various blocks used on your site. You can also go to *WP-Admin > Tools > Block Catalog* to do this yourself.
+On activation, the plugin will prompt you to index your content. You need to do this first before you will be able to see the various blocks used on your site. You can also go to _WP-Admin > Tools > Block Catalog_ to do this yourself.
 
-![Screenshot of Block Catalog Tools](assets/screenshot-1.png)
+![Screenshot of Block Catalog Tools](.wordpress-org/screenshot-1.png)
 
 Alternately, you can run the WP CLI command `wp block-catalog index` to index your content from the command line.
 
 Once indexed, you will be able to see the different blocks used on your site in the Block Catalog Taxonomy.
 
-![Screenshot of Block Catalog Terms](assets/screenshot-2.png)
+![Screenshot of Block Catalog Terms](.wordpress-org/screenshot-2.png)
 
 Navigating to any Block Editor post type will also show you the list of blocks present in a post.
 
-![Screenshot of Post listing with Blocks](assets/screenshot-3.png)
+![Screenshot of Post listing with Blocks](.wordpress-org/screenshot-3.png)
 
 You can also filter the listing to only show Posts that have a specific block.
 
-![Screenshot of Block Catalog Filter](assets/screenshot-4.png)
+![Screenshot of Block Catalog Filter](.wordpress-org/screenshot-4.png)
 
 ## WP CLI Commands
 
 The following WP CLI commands are supported by the Block Catalog plugin.
 
-* `wp block-catalog index [--only=<only>] [--dry-run]`
+- `wp block-catalog index [--only=<only>] [--dry-run]`
+  Iterates through all posts and catalogs them one at a time.
 
-	Iterates through all posts and catalogs them one at a time.
-
-  * [--reset]
+  - [--reset]
     Deletes the previous index before starting.
 
-  * [--only=\<only\>]
+  - [--only=\<only\>]
     Limits the command to the specified comma delimited post ids.
 
-  * [--dry-run]
+  - [--network=\<network\>]
+    Indexes the entire network. Accepts a comma delimited list of child site ids.
+
+  - [--dry-run]
     Runs catalog without saving changes to the DB.
 
-* `wp block-catalog find <blocks>... [--index] [--fields] [--format] [--post_type] [--posts_per_page] [--post_status] [--count=<count>] [--operator=<operator>]`
-   Finds the list of posts having the specified block(s)
-  * \<blocks\>...
+- `wp block-catalog find <blocks>... [--index] [--fields] [--format] [--post_type] [--posts_per_page] [--post_status] [--count=<count>] [--operator=<operator>]`
+  Finds the list of posts having the specified block(s)
+
+  - \<blocks\>...
     The block names to search for, eg:- core/embed
 
-  * [--index]
+  - [--index]
     Whether to re-index before searching.
 
-  * [--fields=\<fields\>]
+  - [--fields=\<fields\>]
     List of post fields to display.
 
-  * [--format=\<format\>]
+  - [--format=\<format\>]
     Output format, default table.
 
-  * [--post_type=\<post_type\>]
+  - [--post_type=\<post_type\>]
     Limit search to specified post types.
 
-  * [--posts_per_page=\<posts_per_page\>]
+  - [--posts_per_page=\<posts_per_page\>]
     Number of posts to find per page, default 20
 
-  * [--post_status=\<post_status\>]
+  - [--post_status=\<post_status\>]
     Post status of posts to search, default 'publish'
 
-  * [--count=\<count\>]
-    Prints total found posts, default true
+  - [--count=\<count\>]
+    Prints total found posts, default true. When combined with `--network` prints an aggregate across the multisite.
 
-  * [--operator=\<operator\>]
+  - [--operator=\<operator\>]
     The query operator to be used in the search clause. Default IN.
 
-* `wp block-catalog delete-index`
-   Resets the Block Catalog by removing all catalog terms.
-* `wp block-catalog post-blocks <post-id> [--index]`
-   Prints the list of blocks in the specified post.
-  * \<post-id\>
+  - [--network=\<network\>]
+    Searches across the entire network if on multisite. Accepts a comma delimited list of child site ids.
+
+- `wp block-catalog delete-index`
+  Resets the Block Catalog by removing all catalog terms.
+
+  - [--network=\<network\>]
+    Deletes the indexes across the entire network. Accepts a comma delimited list of child site ids.
+
+- `wp block-catalog post-blocks <post-id> [--index]`
+  Prints the list of blocks in the specified post.
+
+  - \<post-id\>
     The post id to lookup blocks for.
+
+- `wp block-catalog export [--output=<output>] [--post_type=<types>] [--posts_per_block=<number>] [--ignore_parent=<ignore_parent>]`
+  Exports the posts associated with the 'block_catalog' taxonomy to a CSV file.
+
+  - `[--output=<output>]`
+    Path to the CSV file. Defaults to `/tmp/block-catalog.csv`.
+
+  - `[--post_type=<types>]`
+    Comma-delimited list of post types. Optional.
+
+  - `[--posts_per_block=<number>]`
+    Number of posts per block, default to -1 (all). Optional.
+
+  - `[--ignore_parent=<ignore_parent>]`
+    Ignore top level blocks. Optional. Default true.
 
 ## Frequently Asked Questions
 
@@ -145,7 +157,7 @@ add_filter( 'block_catalog_block_title', function( $title, $block_name, $block )
 
 ## Support Level
 
-**Active:** 10up is actively working on this, and we expect to continue work for the foreseeable future including keeping tested up to the most recent version of WordPress.  Bug reports, feature requests, questions, and pull requests are welcome.
+**Beta:** This project is quite new and we're not sure what our ongoing support level for this will be. Bug reports, feature requests, questions, and pull requests are welcome. If you like this project please let us know, but be cautious using this in a Production environment!
 
 ## Changelog
 
