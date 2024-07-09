@@ -1,8 +1,8 @@
-# Block Catalog (BETA)
+# Block Catalog
 
 > Easily keep track of which Gutenberg Blocks are used across your site.
 
-[![Support Level](https://img.shields.io/badge/support-beta-blueviolet.svg)](#support-level) ![WordPress Plugin: Tested WP Version](https://img.shields.io/wordpress/plugin/tested/block-catalog?label=WordPress) ![WordPress Plugin Required PHP Version](https://img.shields.io/wordpress/plugin/required-php/block-catalog?label=Requires%20PHP) ![WordPress Plugin: Required WP Version](https://img.shields.io/wordpress/plugin/wp-version/block-catalog?label=Requires%20WordPress) https://img.shields.io/wordpress/plugin/tested/block-catalog?label=WordPress%20compatibility [![GPL-2.0-or-later License](https://img.shields.io/github/license/10up/block-catalog.svg)](https://github.com/10up/block-catalog/blob/develop/LICENSE.md)
+[![Support Level](https://img.shields.io/badge/support-stable-blue.svg)](#support-level) ![WordPress Plugin: Tested WP Version](https://img.shields.io/wordpress/plugin/tested/block-catalog?label=WordPress) ![WordPress Plugin Required PHP Version](https://img.shields.io/wordpress/plugin/required-php/block-catalog?label=Requires%20PHP) ![WordPress Plugin: Required WP Version](https://img.shields.io/wordpress/plugin/wp-version/block-catalog?label=Requires%20WordPress) ![WordPress Plugin: Tested WP Version](https://img.shields.io/wordpress/plugin/tested/block-catalog?label=WordPress%20compatibility) [![GPL-2.0-or-later License](https://img.shields.io/github/license/10up/block-catalog.svg)](https://github.com/10up/block-catalog/blob/develop/LICENSE.md)
 
 ## Features
 
@@ -157,7 +157,7 @@ add_filter( 'block_catalog_block_title', function( $title, $block_name, $block )
 
 ## Support Level
 
-**Beta:** This project is quite new and we're not sure what our ongoing support level for this will be. Bug reports, feature requests, questions, and pull requests are welcome. If you like this project please let us know, but be cautious using this in a Production environment!
+**Stable:** 10up is not planning to develop any new features for this, but will still respond to bug reports and security concerns. We welcome PRs, but any that include new features should be small and easy to integrate and should not include breaking changes. We otherwise intend to keep this tested up to the most recent version of WordPress.
 
 ## Changelog
 
