@@ -2,7 +2,7 @@
 Contributors:      10up, dsawardekar, dkotter, jeffpaul
 Tags:              gutenberg, developer, blocks, custom blocks
 Tested up to:      6.6
-Stable tag:        1.6.0
+Stable tag:        1.6.1
 License:           GPL-2.0-or-later
 License URI:       https://spdx.org/licenses/GPL-2.0-or-later.html
 
@@ -52,6 +52,13 @@ To address this you need to update your custom block registration. If this is ou
 
 == Changelog ==
 
+= 1.6.1 - 2024-07-XX =
+* **Changed:** Update [Support Level](https://github.com/10up/block-catalog/blob/develop/README.md#support-level) from `Beta` to `Stable` (props [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#56](https://github.com/10up/block-catalog/pull/56)).
+* **Changed:** Bump WordPress "tested up to" version 6.6 (props [@sudip-md](https://github.com/sudip-md), [@jeffpaul](https://github.com/jeffpaul) via [#60](https://github.com/10up/block-catalog/pull/60)).
+* **Changed:** Bump WordPress minimum supported version to 6.4 (props [@sudip-md](https://github.com/sudip-md), [@jeffpaul](https://github.com/jeffpaul) via [#60](https://github.com/10up/block-catalog/pull/60)).
+* **Security:** Bump `braces` from 3.0.2 to 3.0.3 (props [@dependabot](https://github.com/apps/dependabot), [@faisal-alvi](https://github.com/faisal-alvi) via [#58](https://github.com/10up/block-catalog/pull/58)).
+* **Security:** Bump `ws` from 7.5.9 to 7.5.10 (props [@dependabot](https://github.com/apps/dependabot), [@faisal-alvi](https://github.com/faisal-alvi) via [#58](https://github.com/10up/block-catalog/pull/58)).
+
 = 1.6.0 - 2024-05-13 =
 * **Added:** WP-CLI command, `export`, to generate a CSV of the block catalog (props [@dsawardekar](https://github.com/dsawardekar), [@psorensen](https://github.com/psorensen), [@Sidsector9](https://github.com/Sidsector9) via [#52](https://github.com/10up/block-catalog/pull/52)).
 * **Added:** Classic Editor block detection (props [@dsawardekar](https://github.com/dsawardekar), [@Sidsector9](https://github.com/Sidsector9) via [#53](https://github.com/10up/block-catalog/pull/53)).
@@ -95,6 +102,9 @@ To address this you need to update your custom block registration. If this is ou
 [View historical changelog details here](https://github.com/10up/block-catalog/blob/develop/CHANGELOG.md).
 
 == Upgrade Notice ==
+
+= 1.6.1 =
+Updates the [Support Level](https://github.com/10up/block-catalog/blob/develop/README.md#support-level) from `Beta` to `Stable`.
 
 = 1.5.1 =
 * Note that this release changes the name of the base plugin file. As such, you'll probably need to reactivate the plugin after updating
