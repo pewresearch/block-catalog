@@ -317,6 +317,11 @@ class CatalogBuilder {
 		$output = [];
 
 		foreach ( $blocks as $block ) {
+			// change null blocks to classic editor blocks if matched
+			if ( $this->is_classic_editor_block( $block ) ) {
+				$block['blockName'] = 'core/classic';
+			}
+
 			// ignore empty blocks
 			if ( empty( $block['blockName'] ) ) {
 				continue;
@@ -516,5 +521,40 @@ class CatalogBuilder {
 		}
 
 		return intval( $result->term_id );
+	}
+
+	/**
+	 * Checks if block is a classic editor block
+	 *
+	 * @param array $block The block data
+	 * @return boolean
+	 */
+	public function is_classic_editor_block( $block ) {
+		if ( empty( $block ) ) {
+			return false;
+		}
+
+		// if block has a name, it's not a classic editor block
+		if ( ! is_null( $block['blockName'] ) ) {
+			return false;
+		}
+
+		$allowed_tags = array_keys( wp_kses_allowed_html( 'post' ) );
+
+		$inner_html = $block['innerHTML'] ?? '';
+		$inner_html = trim( $inner_html );
+
+		if ( empty( $inner_html ) ) {
+			return false;
+		}
+
+		// if inner_html has any of the allowed tags, it's a classic editor block
+		foreach ( $allowed_tags as $tag ) {
+			if ( strpos( $inner_html, "<{$tag}" ) !== false ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
