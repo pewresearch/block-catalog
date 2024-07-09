@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [1.6.1] - 2024-07-XX
+### Changed
+- Update [Support Level](https://github.com/10up/block-catalog/blob/develop/README.md#support-level) from `Beta` to `Stable` (props [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#56](https://github.com/10up/block-catalog/pull/56)).
+- Bump WordPress "tested up to" version 6.6 (props [@sudip-md](https://github.com/sudip-md), [@jeffpaul](https://github.com/jeffpaul) via [#60](https://github.com/10up/block-catalog/pull/60)).
+- Bump WordPress minimum supported version to 6.4 (props [@sudip-md](https://github.com/sudip-md), [@jeffpaul](https://github.com/jeffpaul) via [#60](https://github.com/10up/block-catalog/pull/60)).
+
+### Security
+- Bump `braces` from 3.0.2 to 3.0.3 (props [@dependabot](https://github.com/apps/dependabot), [@faisal-alvi](https://github.com/faisal-alvi) via [#58](https://github.com/10up/block-catalog/pull/58)).
+- Bump `ws` from 7.5.9 to 7.5.10 (props [@dependabot](https://github.com/apps/dependabot), [@faisal-alvi](https://github.com/faisal-alvi) via [#58](https://github.com/10up/block-catalog/pull/58)).
+
 ## [1.6.0] - 2024-05-13
 ### Added
 - WP-CLI command, `export`, to generate a CSV of the block catalog (props [@dsawardekar](https://github.com/dsawardekar), [@psorensen](https://github.com/psorensen), [@Sidsector9](https://github.com/Sidsector9) via [#52](https://github.com/10up/block-catalog/pull/52)).
@@ -106,6 +116,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial release
 
 [Unreleased]: https://github.com/10up/block-catalog/compare/trunk...develop
+[1.6.1]: https://github.com/10up/block-catalog/compare/1.6.0...1.6.1
 [1.6.0]: https://github.com/10up/block-catalog/compare/1.5.4...1.6.0
 [1.5.4]: https://github.com/10up/block-catalog/compare/1.5.3...1.5.4
 [1.5.3]: https://github.com/10up/block-catalog/compare/1.5.2...1.5.3
